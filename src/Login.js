@@ -1,20 +1,21 @@
 import React, { useState, useContext, useEffect } from "react";
 import { taskContext } from "./taskContext";
-import { authCheck } from "./authCheck";
+
+import { SiWorldhealthorganization } from "react-icons/si";
 function Login() {
-  const { token, setToken } = useContext(taskContext);
+  const { token, setToken,login,setLogin } = useContext(taskContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [result, setResult] = useState("");
-
+  const stupidf = () => { setLogin(true) };
   const signIn = async (e) => {
     e.preventDefault();
     const requestOptions = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        credentials: "true",
+        credentials: "include",
       },
 
       body: JSON.stringify({ username: username, password: password }),
@@ -23,13 +24,17 @@ function Login() {
       .then((res) => res.json())
 
       .then((data) => {
+        localStorage.setItem("token", data.token);
+        if (data.token) {
+          setLogin(true)
+          console.log(data.token);
+
+        }
         console.log(data);
 
-        setToken(data.token);
 
-        localStorage.setItem("token", data.token);
-        authCheck();
       })
+     
       .catch((err) => {
         console.log(err);
       });
