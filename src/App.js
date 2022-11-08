@@ -20,21 +20,32 @@ function App() {
 
   const [reasonToUpdateDB, anyChangeIsA] = useState("default_no_call");
 
-  const [tasks, setTasks] = useState(() => {
-    const localData = localStorage.getItem("tasks");
 
-    anyChangeIsA(!reasonToUpdateDB);
+  
+  const [tasks, setTasks] = useState([]);
+  // const [tasks, setTasks] = useState(() => {
+  //   const localData = localStorage.getItem("tasks");
 
-    return localData ? JSON.parse(localData) : [];
-  });
-  window.onstorage = () => {
-    setTasks(JSON.parse(localStorage.getItem("tasks")));
-    anyChangeIsA(!reasonToUpdateDB);
-  };
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    anyChangeIsA(!reasonToUpdateDB);
-  }, [tasks]);
+  //   anyChangeIsA(!reasonToUpdateDB);
+    
+  //   return localData ? JSON.parse(localData) : [];
+  // });
+
+
+
+
+
+  // window.onstorage = () => {
+  //   setTasks(JSON.parse(localStorage.getItem("tasks")));
+  //   anyChangeIsA(!reasonToUpdateDB);
+  // };
+
+
+
+  // useEffect(() => {
+  //   localStorage.setItem("tasks", JSON.stringify(tasks));
+  //   anyChangeIsA(!reasonToUpdateDB);
+  // }, [tasks]);
 
   const [input, setInput] = useState("");
   const [popped, setPopped] = useState(false);
@@ -56,7 +67,11 @@ function App() {
       text: input,
       completed: false,
     };
+
+
+
     setTasks([...tasks, addTask]);
+    console.log(tasks)
     anyChangeIsA(!reasonToUpdateDB);
     setInput("");
   };
@@ -79,40 +94,72 @@ function App() {
   const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",];
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  useEffect(() => { console.log('ran'); if (login === true) { updateDB(); console.log('sending to db') } }, [reasonToUpdateDB]);
-  useEffect(()=> async() => {
-    const checkOldToken = localStorage.getItem("token");
+  useEffect(() => {
+    console.log('ran');
+    if (login === true && (tasks != 'undefined' && tasks.length > 0))
+    {
+      updateDB(tasks);
+      console.log('sending to db')
+    }
+  }, [reasonToUpdateDB]);
+
+
+
+
+
+
+
+
+
+
+
+
+
   
-    if (checkOldToken) {
-      const reqOptions = {
-        method: "get",
-        headers: {
-          authorization: checkOldToken,
-          "Content-Type": "application/json",
-          credentials: "true",
-        },
-      };
-      await fetch("http://localhost:3500/auth/tasks", reqOptions)
-        .then((res) => res.json())
+
+
+  async function InitialFetch() {
+   if(!login) {
+      const checkOldToken = localStorage.getItem("token");
   
-        .then((data) => {
+      if (checkOldToken) {
+        const reqOptions = {
+          method: "get",
+          headers: {
+            authorization: checkOldToken,
+            "Content-Type": "application/json",
+            credentials: "true",
+          },
+        };
+        await fetch("http://localhost:3500/auth/tasks", reqOptions)
+          .then((res) => res.json())
+  
+          .then((data) => {
           
-          if (data.upd) {console.log('tasks recieved')
-            localStorage.setItem('tasks', data.upd);
-            if (!login) {
-              setLogin(true)
-            }
-            //THIS IS LEGIT STUPID
-            // window.location.reload(false);
+            if (data.upd) {
+              console.log('tasks recieved')
+              console.log(JSON.parse(data.upd));
+              setTasks(JSON.parse(data.upd))
+
+             
+                setLogin(true)
+                console.log(tasks + ' <--------- tasks lol')
+            
+              //THIS IS LEGIT STUPID
+              // window.location.reload(false);
   
-          }else{setLogin(false)}
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+            } else { setLogin(false) }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     }
   }
-,[tasks,login])
+InitialFetch()
+  
+
+  
   return (
     <taskContext.Provider
       value={{token,setToken,bearer,setBearer,loginData,setLoginData,tasks,setTasks,login,setLogin,}}
@@ -161,44 +208,52 @@ function App() {
             <></>
           )}
 
-          {tasks
-            .map((task) => {
-              if (hideCompleted) {
-                if (!task.completed)
-                  return (
-                    <div
-                      className={`${task.completed ? "completed" : "task-row"}`}
-                      key={task.id}
-                      onDoubleClick={() => {
-                        toggleComplete(task.id);
-                      }}
-                    >
-                      <p className="textline">{task.text}</p>
-                      <AiOutlineCloseCircle
-                        className="icon-delete"
-                        onClick={() => deleteTask(task.id)}
-                      />
-                    </div>
-                  );
-              } else {
-                return (
-                  <div
-                    className={`${task.completed ? "completed" : "task-row"}`}
-                    key={task.id}
-                    onDoubleClick={() => {
-                      toggleComplete(task.id);
-                    }}
-                  >
-                    <p className="textline">{task.text}</p>
-                    <AiOutlineCloseCircle
-                      className="icon-delete"
-                      onClick={() => deleteTask(task.id)}
-                    />
-                  </div>
-                );
-              }
-            })
-            .reverse()}
+          
+{
+              tasks
+                .map((task) => {
+                  if (hideCompleted) {
+                    if (!task.completed)
+                      return (
+                        <div
+                          className={`${task.completed ? "completed" : "task-row"}`}
+                          key={task.id}
+                          onDoubleClick={() => {
+                            toggleComplete(task.id);
+                          }}
+                        >
+                          <p className="textline">{task.text}</p>
+                          <AiOutlineCloseCircle
+                            className="icon-delete"
+                            onClick={() => deleteTask(task.id)}
+                          />
+                        </div>
+                      );
+                  } else {
+                    return (
+                      <div
+                        className={`${task.completed ? "completed" : "task-row"}`}
+                        key={task.id}
+                        onDoubleClick={() => {
+                          toggleComplete(task.id);
+                        }}
+                      >
+                        <p className="textline">{task.text}</p>
+                        <AiOutlineCloseCircle
+                          className="icon-delete"
+                          onClick={() => deleteTask(task.id)}
+                        />
+                      </div>
+                    );
+                  }
+                })
+                .reverse()
+            }
+
+
+
+
+
         </div>
         <p className="length">
           {tasks < 1
@@ -207,7 +262,8 @@ function App() {
           {days[date.getDay()]} {date.getDate()}, {months[date.getMonth()]}
         </p>
         {/* <Register /> */}
-        {!login ? <Login /> : <></>}
+        {/* {!login ? <Login /> : <></>} */}
+        <Login />
       </div>
     </taskContext.Provider>
   );

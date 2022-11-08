@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-export const updateDB = async () => {
-
+export const updateDB = async (currentTasks) => {
+const tasksToSend =JSON.stringify(currentTasks)
   const asHeaders = {
    
         method: "get",
         headers: {
             authorization: localStorage.getItem("token"),
-            tasks: localStorage.getItem("tasks"),
+            tasks: tasksToSend,
           "Content-Type": "application/json",
             credentials: 'include',
 

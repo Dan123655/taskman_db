@@ -1,14 +1,19 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext,} from "react";
 import { taskContext } from "./taskContext";
 
-import { SiWorldhealthorganization } from "react-icons/si";
+
 function Login() {
-  const { token, setToken,login,setLogin } = useContext(taskContext);
+  const { login, setLogin,tasks,setTasks } = useContext(taskContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [result, setResult] = useState("");
-  const stupidf = () => { setLogin(true) };
+
+  const SignOut =()=> {
+    localStorage.clear();
+    window.location.reload()
+   }
+
+ 
   const signIn = async (e) => {
     e.preventDefault();
     const requestOptions = {
@@ -46,36 +51,42 @@ function Login() {
     console.log("handlesubmit");
     signIn(e);
     // e.preventdefault();
+
+
+
+
+
   };
 
-  return (
-    <>
-      <form id="myform2" onSubmit={handleSubmit}>
-        <label htmlFor="login">Username</label>
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          type="login"
-          placeholder="login"
-          id="login"
-          name="login"
-        ></input>
-        <label htmlFor="password">password</label>
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-          placeholder="password"
-          id="password"
-          name="password"
-        ></input>
-        <button id="myform2" type="submit">
-          Log in
-        </button>
-        <h3>{result}</h3>
-      </form>
-    </>
-  );
+  return ( 
+    <>  {!login?
+      <>{
+        <form id="myform2" onSubmit={handleSubmit}>
+          <label htmlFor="login">Username</label>
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            type="login"
+            placeholder="login"
+            id="login"
+            name="login"
+          ></input>
+          <label htmlFor="password">password</label>
+          <input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            placeholder="password"
+            id="password"
+            name="password"
+          ></input>
+          <button id="myform2" type="submit">
+            Sign in
+          </button>
+          <h3></h3>
+        </form>
+      }</>:<><button onClick={SignOut}>Sign Out</button></>}
+      </>);
 }
 
 export default Login;
