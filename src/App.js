@@ -16,8 +16,6 @@ function App() {
   const [token, setToken] = useState("");
   const [bearer, setBearer] = useState("");
   const [loginData, setLoginData] = useState("");
-
-
   const [reasonToUpdateDB, anyChangeIsA] = useState("default_no_call");
 
 
@@ -108,16 +106,6 @@ function App() {
 
 
 
-
-
-
-
-
-
-
-  
-
-
   async function InitialFetch() {
    if(!login) {
       const checkOldToken = localStorage.getItem("token");
@@ -142,14 +130,13 @@ function App() {
               setTasks(JSON.parse(data.upd))
 
              
-                setLogin(true)
-                console.log(tasks + ' <--------- tasks lol')
+              setLogin(true);
+
             
-              //THIS IS LEGIT STUPID
-              // window.location.reload(false);
-  
             } else { setLogin(false) }
           })
+
+        
           .catch((err) => {
             console.log(err);
           });

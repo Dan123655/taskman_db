@@ -33,6 +33,7 @@ function Login() {
         if (data.token) {
           setLogin(true)
           console.log(data.token);
+          window.location.reload();
 
         }
         console.log(data);
