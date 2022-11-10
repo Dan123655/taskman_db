@@ -11,7 +11,8 @@ import { updateDB } from "./updateDB";
 // import { authCheck } from './authCheck';
 //tasks work, no reload od initial update
 function App() {
-
+  const [ regComplete, setRegComplete ] =useState(false)
+  const [signButton, setSignButton] = useState(false);
   const [login, setLogin] = useState(false);
   const [token, setToken] = useState("");
   const [bearer, setBearer] = useState("");
@@ -108,6 +109,7 @@ function App() {
 
              
               setLogin(true);
+   
 
             
             } else { setLogin(false) }
@@ -126,7 +128,7 @@ InitialFetch()
   
   return (
     <taskContext.Provider
-      value={{token,setToken,bearer,setBearer,loginData,setLoginData,tasks,setTasks,login,setLogin}}
+      value={{token,setToken,bearer,setBearer,loginData,setLoginData,tasks,setTasks,login,setLogin,signButton,setSignButton,regComplete,setRegComplete}}
     >
       <div className="App">
         <div className="app-title">

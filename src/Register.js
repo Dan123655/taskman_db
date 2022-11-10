@@ -8,7 +8,7 @@ function Register() {
     const [password, setPassword] = useState('');
     const [result, setResult] = useState('')
     const [regButton, setRegButton] = useState(false)
-    const [ regComplete, setRegComplete ] =useState(false)
+    const { regComplete, setRegComplete, login, setLogin } = useContext(taskContext)
 
 
     const regstate = () => { setRegComplete(true) }
@@ -29,7 +29,7 @@ function Register() {
             .then(data => {
                 console.log(data);
                 setResult(JSON.stringify(data.message));
-                if (data.success) regstate();setResult(<h3>Registation successful, sign in below</h3>)
+                if (data.success) regstate(); setResult(<h3>Registation successful, sign in below</h3>)
             })
             
         // .then(data => this.setState({ postId: data.id }))
@@ -49,23 +49,24 @@ function Register() {
 
 
     return (
-    <>
-        {!regComplete?<>{regButton ?
-            <>
-                <form id='myform2' onSubmit={handleSubmit}>
-                    <label htmlFor='login'>Username</label>
-                    <input value={username} onChange={((e) => setUsername(e.target.value))} type='login' placeholder='login' id='login' name='login'></input>
-                    <label htmlFor='password'>password</label>
-                    <input value={password} onChange={((e) => setPassword(e.target.value))} type='password' placeholder='password' id='password' name='password'></input>
-                    <button id='myform2' type='submit'>Register</button>
+       <> {!login?<>
+            {!regComplete && !login ? <>{regButton ?
+                <>
+                    <form id='myform2' onSubmit={handleSubmit}>
+                        <label htmlFor='login'>Username</label>
+                        <input value={username} onChange={((e) => setUsername(e.target.value))} type='login' placeholder='login' id='login' name='login'></input>
+                        <label htmlFor='password'>password</label>
+                        <input value={password} onChange={((e) => setPassword(e.target.value))} type='password' placeholder='password' id='password' name='password'></input>
+                        <button id='myform2' type='submit'>Register</button>
                 
-                </form>
+                    </form>
 
-            </> :
-            <><button className='signbut' onClick={regButt}>Sign Up</button></>
-        }
-            <>{result}</>
-        </>:<>{result}</>}
+                </> :
+                <><button className='signbut' onClick={regButt}>Sign Up</button></>
+            }
+                <>{result}</>
+            </> : <>{result}</>}
+        </>:<></>}
         </>
 
     )
