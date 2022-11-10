@@ -6,9 +6,9 @@ function Register() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [result, setResult] = useState('')
-    const [regButton, setRegButton] = useState(false)
-    const { regComplete, setRegComplete, login, setLogin } = useContext(taskContext)
+    // const [result, setResult] = useState('')
+    // const [regButton, setRegButton] = useState(false)
+    const { regLog,setRegLog,regComplete,loginLog,setLoginLog, setRegComplete, login, setLogin,regButton,setRegButton,signButton,setSignButton } = useContext(taskContext)
 
 
     const regstate = () => { setRegComplete(true) }
@@ -24,12 +24,15 @@ function Register() {
             },
             body: JSON.stringify({ 'username': username, 'password': password })
         };
-        fetch('http://localhost:3500/auth/registration', requestOptions)
+        fetch('https://node-auth-seven.vercel.app//api/registration', requestOptions)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-                setResult(JSON.stringify(data.message));
-                if (data.success) regstate(); setResult(<h3>Registation successful, sign in below</h3>)
+                // console.log(data);
+                // setResult(JSON.stringify(data.message));
+                if (data.success) regstate(); setRegLog(<h3>Registation successful, sign in below</h3>)
+                if (data.error) ; setRegLog(<h3>registration error. try again later</h3>)
+                if (data.exists) ; setRegLog(<h3>user already exists</h3>)
+                if (data.validation) ; setRegLog(<h3>choose valid username and password (5-12 symbols)</h3>)
             })
             
         // .then(data => this.setState({ postId: data.id }))
@@ -37,7 +40,7 @@ function Register() {
     }
     const handleSubmit = (e) => {
 
-        console.log(username, password)
+        // console.log(username, password)
         console.log('handlesubmit')
         registration(e)
         // e.preventdefault();
@@ -45,6 +48,8 @@ function Register() {
 
     const regButt = () => {
         setRegButton(true)
+        setSignButton(false)
+        setLoginLog(<></>)
     }
 
 
@@ -54,9 +59,9 @@ function Register() {
                 <>
                     <form id='myform2' onSubmit={handleSubmit}>
                         <label htmlFor='login'>Username</label>
-                        <input value={username} onChange={((e) => setUsername(e.target.value))} type='login' placeholder='login' id='login' name='login'></input>
+                        <input value={username} onChange={((e) => setUsername(e.target.value))} type='login' placeholder='enter username' id='login' name='login'></input>
                         <label htmlFor='password'>password</label>
-                        <input value={password} onChange={((e) => setPassword(e.target.value))} type='password' placeholder='password' id='password' name='password'></input>
+                        <input value={password} onChange={((e) => setPassword(e.target.value))} type='password' placeholder='enter password (5-12 symbols)' id='password' name='password'></input>
                         <button id='myform2' type='submit'>Register</button>
                 
                     </form>
@@ -64,8 +69,8 @@ function Register() {
                 </> :
                 <><button className='signbut' onClick={regButt}>Sign Up</button></>
             }
-                <>{result}</>
-            </> : <>{result}</>}
+                <>{regLog}</>
+            </> : <>{regLog}</>}
         </>:<></>}
         </>
 

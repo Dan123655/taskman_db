@@ -18,6 +18,9 @@ function App() {
   const [bearer, setBearer] = useState("");
   const [loginData, setLoginData] = useState("");
   const [reasonToUpdateDB, anyChangeIsA] = useState("default_no_call");
+  const [regButton, setRegButton] = useState(false)
+  const [loginLog, setLoginLog] = useState('')
+  const [regLog, setRegLog] = useState('')
 
 
   
@@ -97,7 +100,7 @@ function App() {
             credentials: "true",
           },
         };
-        await fetch("http://localhost:3500/auth/tasks", reqOptions)
+        await fetch("https://node-auth-seven.vercel.app//api/tasks", reqOptions)
           .then((res) => res.json())
   
           .then((data) => {
@@ -128,7 +131,7 @@ InitialFetch()
   
   return (
     <taskContext.Provider
-      value={{token,setToken,bearer,setBearer,loginData,setLoginData,tasks,setTasks,login,setLogin,signButton,setSignButton,regComplete,setRegComplete}}
+      value={{regLog,setRegLog,loginLog,setLoginLog,token,setToken,bearer,setBearer,loginData,setLoginData,tasks,setTasks,login,setLogin,signButton,setSignButton,regComplete,setRegComplete,regButton,setRegButton}}
     >
       <div className="App">
         <div className="app-title">
