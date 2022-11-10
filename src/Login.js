@@ -3,15 +3,16 @@ import { taskContext } from "./taskContext";
 
 
 function Login() {
-  const { login, setLogin,tasks,setTasks } = useContext(taskContext);
+  const { login, setLogin, tasks, setTasks } = useContext(taskContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [signButton, setSignButton] = useState(false);
 
 
-  const SignOut =()=> {
+  const SignOut = () => {
     localStorage.clear();
     window.location.reload()
-   }
+  }
 
  
   const signIn = async (e) => {
@@ -29,8 +30,9 @@ function Login() {
       .then((res) => res.json())
 
       .then((data) => {
-        localStorage.setItem("token", data.token);
+        
         if (data.token) {
+          localStorage.setItem("token", data.token);
           setLogin(true)
           console.log(data.token);
           window.location.reload();
@@ -53,41 +55,48 @@ function Login() {
     signIn(e);
     // e.preventdefault();
 
+}
 
 
-
+const button = () => {
+  setSignButton(true)
 
   };
 
-  return ( 
-    <>  {!login?
-      <>{
-        <form id="myform2" onSubmit={handleSubmit}>
-          <label htmlFor="login">Username</label>
-          <input
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            type="login"
-            placeholder="login"
-            id="login"
-            name="login"
-          ></input>
-          <label htmlFor="password">password</label>
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            placeholder="password"
-            id="password"
-            name="password"
-          ></input>
-          <button id="myform2" type="submit">
-            Sign in
-          </button>
-          <h3></h3>
-        </form>
-      }</>:<><button onClick={SignOut}>Sign Out</button></>}
-      </>);
+  return (
+    <>
+      {signButton?<>
+      {!login ?
+        <>{
+          <form id="myform2" onSubmit={handleSubmit}>
+            <label htmlFor="login">Username</label>
+            <input
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              type="login"
+              placeholder="login"
+              id="login"
+              name="login"
+            ></input>
+            <label htmlFor="password">password</label>
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              placeholder="password"
+              id="password"
+              name="password"
+            ></input>
+            <button id="myform2" type="submit">
+              Sign in
+            </button>
+            <h3></h3>
+          </form>
+        }</> : <><button onClick={SignOut}>Sign Out</button></>}
+      
+    </>:<><button className="signbut" onClick={button}>Sign In</button></>}
+    </>
+  );
 }
 
 export default Login;

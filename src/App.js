@@ -6,7 +6,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { HiOutlinePlus } from "react-icons/hi";
 import { SiEgghead } from "react-icons/si";
 import Login from "./Login";
-// import Register from "./Register";
+import Register from "./Register";
 import { updateDB } from "./updateDB";
 // import { authCheck } from './authCheck';
 //tasks work, no reload od initial update
@@ -21,29 +21,6 @@ function App() {
 
   
   const [tasks, setTasks] = useState([]);
-  // const [tasks, setTasks] = useState(() => {
-  //   const localData = localStorage.getItem("tasks");
-
-  //   anyChangeIsA(!reasonToUpdateDB);
-    
-  //   return localData ? JSON.parse(localData) : [];
-  // });
-
-
-
-
-
-  // window.onstorage = () => {
-  //   setTasks(JSON.parse(localStorage.getItem("tasks")));
-  //   anyChangeIsA(!reasonToUpdateDB);
-  // };
-
-
-
-  // useEffect(() => {
-  //   localStorage.setItem("tasks", JSON.stringify(tasks));
-  //   anyChangeIsA(!reasonToUpdateDB);
-  // }, [tasks]);
 
   const [input, setInput] = useState("");
   const [popped, setPopped] = useState(false);
@@ -149,42 +126,44 @@ InitialFetch()
   
   return (
     <taskContext.Provider
-      value={{token,setToken,bearer,setBearer,loginData,setLoginData,tasks,setTasks,login,setLogin,}}
+      value={{token,setToken,bearer,setBearer,loginData,setLoginData,tasks,setTasks,login,setLogin}}
     >
       <div className="App">
         <div className="app-title">
           <h1>
             <BsBook className="book-icon"></BsBook> Taskman
           </h1>
-
-          <div className="date">
-            <p>
-              {!hideCompleted ? (
-                <BsEye
-                  className="hide-completed"
-                  onClick={toggleHideCompleted}
-                />
-              ) : (
-                <BsEyeSlash
-                  className="hide-completed"
-                  color="gray"
-                  onClick={toggleHideCompleted}
-                />
-              )}
-            </p>
-          </div>
-          <form onSubmit={HandleSumbit}>
-            <div className="form-input">
-              <HiOutlinePlus className="icon-add" onClick={HandleSumbit} />
-              <input
-                placeholder="Enter a task.."
-                type="text"
-                value={input}
-                maxLength="33"
-                onChange={(e) => setInput(e.target.value)}
-              />
-            </div>
-          </form>
+          {login ?
+            <>
+              <div className="date">
+                <p>
+                  {!hideCompleted ? (
+                    <BsEye
+                      className="hide-completed"
+                      onClick={toggleHideCompleted}
+                    />
+                  ) : (
+                    <BsEyeSlash
+                      className="hide-completed"
+                      color="gray"
+                      onClick={toggleHideCompleted}
+                    />
+                  )}
+                </p>
+              </div>
+              <form onSubmit={HandleSumbit}>
+                <div className="form-input">
+                  <HiOutlinePlus className="icon-add" onClick={HandleSumbit} />
+                  <input
+                    placeholder="Enter a task.."
+                    type="text"
+                    value={input}
+                    maxLength="33"
+                    onChange={(e) => setInput(e.target.value)}
+                  />
+                </div>
+              </form>
+            </> : <></>}
           {tasks.length == 1 && !popped ? (
             <div className="popup-task-row">
               <p className="popup-textline" onLoad={showOneTimeThenDont()}>
@@ -242,14 +221,18 @@ InitialFetch()
 
 
         </div>
-        <p className="length">
-          {tasks < 1
-            ? "You have no tasks for "
-            : `You have: ${tasks.length} tasks for `}{" "}
-          {days[date.getDay()]} {date.getDate()}, {months[date.getMonth()]}
-        </p>
-        {/* <Register /> */}
-        {/* {!login ? <Login /> : <></>} */}
+        {login?
+          <p className="length">
+            {tasks < 1
+              ? "You have no tasks for "
+              : `You have: ${tasks.length} tasks for `}{" "}
+            {days[date.getDay()]} {date.getDate()}, {months[date.getMonth()]}
+          </p>
+          :
+          <></>
+        }
+        <Register />
+
         <Login />
       </div>
     </taskContext.Provider>
