@@ -1,12 +1,17 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { taskContext } from "./taskContext";
-import { authCheck } from "./authCheck";
+
 function Login() {
-  const { token, setToken } = useContext(taskContext);
+  const { login, setLogin, tasks, setTasks } = useContext(taskContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const {loginLog,setLoginLog,regLog,setRegLog, signButton, setSignButton,regButton,setRegButton } = useContext(taskContext);
+  // const [result,setResult] = useState('')
 
-  const [result, setResult] = useState("");
+  const SignOut = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
 
   const signIn = async (e) => {
     e.preventDefault();
@@ -14,61 +19,102 @@ function Login() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        credentials: "true",
+        credentials: "include",
       },
 
       body: JSON.stringify({ username: username, password: password }),
     };
-    await fetch("http://localhost:3500/auth/login", requestOptions)
+    await fetch("https://node-auth-seven.vercel.app//login", requestOptions)
       .then((res) => res.json())
 
       .then((data) => {
-        console.log(data);
-
-        setToken(data.token);
-
-        localStorage.setItem("token", data.token);
-        authCheck();
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          setLogin(true);
+          // console.log(data.token);
+          window.location.reload();
+        }
+        // console.log(data);
+        if (data.notfound) { setLoginLog(<h3>user {data.username} was not found</h3>)}
+        if (data.incorrect) { setLoginLog(<h3>incorrect password</h3>)}
+        if (data.error) { setLoginLog(<h3>login error. try again later</h3>)}
       })
+
       .catch((err) => {
         console.log(err);
       });
 
-    // .then(data => this.setState({ postId: data.id }))
   };
   const handleSubmit = (e) => {
-    console.log(username, password);
-    console.log("handlesubmit");
+    // console.log(username, password);
+    // console.log("handlesubmit");
     signIn(e);
-    // e.preventdefault();
+  };
+
+  const button = () => {
+    setSignButton(true);
+    setRegButton(false)
+    setRegLog(<></>)
   };
 
   return (
     <>
-      <form id="myform2" onSubmit={handleSubmit}>
-        <label htmlFor="login">Username</label>
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          type="login"
-          placeholder="login"
-          id="login"
-          name="login"
-        ></input>
-        <label htmlFor="password">password</label>
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-          placeholder="password"
-          id="password"
-          name="password"
-        ></input>
-        <button id="myform2" type="submit">
-          Log in
-        </button>
-        <h3>{result}</h3>
-      </form>
+      {!login ? (
+        <>
+          {signButton ? (
+            <>
+              {!login ? (
+                <>
+                  {
+                    <form id="myform2" onSubmit={handleSubmit}>
+                      <label htmlFor="login">Username</label>
+                      <input
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        type="login"
+                        placeholder="login"
+                        id="login"
+                        name="login"
+                      ></input>
+                      <label htmlFor="password">password</label>
+                      <input
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        type="password"
+                        placeholder="password"
+                        id="password"
+                        name="password"
+                      ></input>
+                      <button id="myform2" type="submit">
+                        Sign in
+                      </button>
+                      <>{loginLog}</>
+                    </form>
+                  }
+                </>
+              ) : (
+                <>
+                  <button id="0" className="signout" onClick={SignOut}>
+                    Sign Out
+                  </button>
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              <button className="signbut" onClick={button}>
+                Sign In
+              </button>
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <button id="1" className="signout" onClick={SignOut}>
+            Sign Out
+          </button>
+        </>
+      )}{" "}
     </>
   );
 }

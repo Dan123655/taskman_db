@@ -1,6 +1,5 @@
 {
   "name": "taskman",
-  "proxy":"http://localhost:3500",
   "version": "0.1.0",
   "homepage": "https://dan123655.github.io/taskman",
   "private": true,
