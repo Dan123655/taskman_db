@@ -13,36 +13,36 @@ function Register() {
 
     const regstate = () => { setRegComplete(true) }
     
-    const registration = async (e) => {
-        e.preventDefault();
+    const registration = async () => {
         const requestOptions = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'access-control-allow-origin': '*',
+                'access-control-allow-origin': 'https://node-auth-seven.vercel.app',
                 'accept': '*/*'
             },
             body: JSON.stringify({ 'username': username, 'password': password })
         };
-        fetch('https://node-auth-seven.vercel.app//api/registration', requestOptions)
+        console.log(username,password)
+        fetch('https://node-auth-seven.vercel.app/api/registration', requestOptions)
             .then(response => response.json())
             .then(data => {
-                // console.log(data);
+                console.log(data);
                 // setResult(JSON.stringify(data.message));
                 if (data.success) regstate(); setRegLog(<h3>Registation successful, sign in below</h3>)
-                if (data.error) ; setRegLog(<h3>registration error. try again later</h3>)
-                if (data.exists) ; setRegLog(<h3>user already exists</h3>)
-                if (data.validation) ; setRegLog(<h3>choose valid username and password (5-12 symbols)</h3>)
+                // if (data.message) regstate(); setRegLog(<h3>{data.message}</h3>)
+                if (data.error) ; setRegLog(<h3>`${data.message}`</h3>)
+                // if (data.exists) ; setRegLog(<h3>user already exists</h3>)
             })
             
         // .then(data => this.setState({ postId: data.id }))
            
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = () => {
 
         // console.log(username, password)
         console.log('handlesubmit')
-        registration(e)
+        registration()
         // e.preventdefault();
     }
 
