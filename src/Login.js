@@ -18,13 +18,14 @@ function Login() {
     const requestOptions = {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        credentials: "include",
-      },
+        'Content-Type': 'application/json',
+        'access-control-allow-origin': 'https://node-auth-seven.vercel.app',
+        'accept': '*/*'
+    },
 
       body: JSON.stringify({ username: username, password: password }),
     };
-    await fetch("https://node-auth-seven.vercel.app//login", requestOptions)
+    await fetch("https://node-auth-seven.vercel.app/api/login", requestOptions)
       .then((res) => res.json())
 
       .then((data) => {
@@ -34,9 +35,9 @@ function Login() {
           // console.log(data.token);
           window.location.reload();
         }
-        // console.log(data);
-        if (data.notfound) { setLoginLog(<h3>user {data.username} was not found</h3>)}
-        if (data.incorrect) { setLoginLog(<h3>incorrect password</h3>)}
+        console.log(data);
+        // if (data.notfound) { setLoginLog(<h3>user {data.username} was not found</h3>)}
+        if (data.message) { setLoginLog(<h3>data.message</h3>)}
         if (data.error) { setLoginLog(<h3>login error. try again later</h3>)}
       })
 
