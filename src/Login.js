@@ -19,7 +19,7 @@ function Login() {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
-        'access-control-allow-origin': 'https://dan123655.github.io/taskman_db',
+        'access-control-allow-origin': 'https://node-auth-seven.vercel.app',
     
     },
 
