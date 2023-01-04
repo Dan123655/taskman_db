@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import { taskContext } from "./taskContext";
 import { useState, useEffect } from "react";
 import { BsBook, BsEye, BsEyeSlash } from "react-icons/bs";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { HiOutlinePlus } from "react-icons/hi";
-import { SiEgghead } from "react-icons/si";
 import Login from "./Login";
 import Register from "./Register";
 import { updateDB } from "./updateDB";
@@ -98,7 +97,7 @@ function App() {
             authorization: checkOldToken,
             "Content-Type": "application/json",
             credentials: "true",
-            'access-control-allow-origin': 'https://node-auth-seven.vercel.app'
+            'access-control-allow-origin': 'https://dan123655.github.io'
           },
         };
         await fetch("https://node-auth-seven.vercel.app/api/tasks", reqOptions)
