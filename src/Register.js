@@ -22,7 +22,7 @@ function Register() {
                
       
             },
-            credentials:'include',
+            // credentials:'include',
             body:  JSON.stringify({ 'username': username, 'password': password })
         };
         console.log(username,password)

@@ -6,13 +6,13 @@ const tasksToSend =JSON.stringify(currentTasks)
         headers: {
             authorization: localStorage.getItem("token"),
             // tasks: tasksToSend,
-          "Content-Type": "application/json",
-          'Access-Control-Allow-Origin': 'https://node-auth-seven.vercel.app',
-            credentials: 'include',
+          // "Content-Type": "application/json",
+          // 'Access-Control-Allow-Origin': 'https://node-auth-seven.vercel.app',
+            // credentials: 'include',
 
       
     },
-    credentials:'include',
+    // credentials:'include',
     body:  JSON.stringify({ newTasks:tasksToSend})
       };
   // await fetch("http://localhost:3500/api/update", asHeaders)

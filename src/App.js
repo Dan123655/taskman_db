@@ -96,8 +96,8 @@ function App() {
           headers: {
             authorization: checkOldToken,
             "Content-Type": "application/json",
-            credentials: "true",
-            'access-control-allow-origin': 'https://node-auth-seven.vercel.app'
+            // credentials: "true",
+            // 'access-control-allow-origin': 'https://node-auth-seven.vercel.app'
           },
         };
         await fetch("https://node-auth-seven.vercel.app/api/tasks", reqOptions)
