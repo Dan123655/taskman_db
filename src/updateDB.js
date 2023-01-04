@@ -5,8 +5,8 @@ const tasksToSend =JSON.stringify(currentTasks)
         method: "post",
         headers: {
             authorization: localStorage.getItem("token"),
-            // tasks: tasksToSend,
-          // "Content-Type": "application/json",
+            tasks: tasksToSend,
+          "Content-Type": "application/json",
           // 'Access-Control-Allow-Origin': 'https://node-auth-seven.vercel.app',
             // credentials: 'include',
 
